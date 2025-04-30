@@ -35,6 +35,7 @@ public class SecurityConfig {
                                 "/auth/**",
                                "actuator/circuitbreakers**").permitAll()
                                 .requestMatchers("/actuator/**").permitAll()
+                                .requestMatchers("/demobackend-production-3308.up.railway.app**").permitAll()
                                 .requestMatchers("/api/v1/**").authenticated()
                         .anyRequest()
                                 .authenticated()
