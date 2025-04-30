@@ -1,0 +1,17 @@
+filebeat.inputs:
+  - type: filestream
+    id: spring-log
+    paths:
+      - /app-logs/*.log
+    encoding: utf-8
+    fields:
+      service: spring-boot-app
+    fields_under_root: true
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+  username: "elastic"
+  password: "password123"
+
+setup.kibana:
+  host: "http://kibana:5601"

@@ -1,0 +1,70 @@
+services:
+  db:
+    image: postgres:13
+    container_name: back_end_sonar
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Purple3664
+      POSTGRES_DB: demo_backend
+    ports:
+      - 5432:5432
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    networks:
+      - backend
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.11.1
+    ports:
+      - "5044:5044"
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    networks:
+      - backend
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.1
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=password1234
+    ports:
+      - "5601:5601"
+    networks:
+      - backend
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.11.1
+    user: root
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./logs:/app-logs
+    depends_on:
+      - elasticsearch
+    networks:
+      - backend
+
+
+  sonarqube:
+    image: sonarqube:9.9-community
+    container_name: back_end_sonar_test
+    ports:
+      - "9000:9000"
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://db:5432/demo_backend
+      SONAR_JDBC_USERNAME: postgres
+      SONAR_JDBC_PASSWORD: Purple3664
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
