@@ -169,8 +169,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<version>3.4.4</version>
 		</dependency>
+<!--		Kafka-->
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
 
-<!--		jacoco dependency-->
+
+		<!--		jacoco dependency-->
 		<dependency>
 			<groupId>org.jacoco</groupId>
 			<artifactId>jacoco-maven-plugin</artifactId>

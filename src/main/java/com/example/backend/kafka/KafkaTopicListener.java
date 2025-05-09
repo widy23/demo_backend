@@ -1,15 +1,16 @@
 package com.example.backend.kafka;
 
-import org.apache.kafka.clients.admin.NewTopic;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.config.TopicBuilder;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class KafkaListener {
+public class KafkaTopicListener {
 
-    private static final String TOPIC_NAME = "mi-primer-topic";
+    private static final String TOPIC_NAME = "test-topic";
     private static final String GROUP_ID = "mi-grupo-consumidores";
-    public void listenMessage(String message){}
+
+    @KafkaListener(topics = TOPIC_NAME, groupId = GROUP_ID)
+    public void escucharMensaje(String mensaje) {
+        System.out.println(String.format("Mensaje recibido: %s", mensaje));
+    }
 }
